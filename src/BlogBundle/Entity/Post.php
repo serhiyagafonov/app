@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="PostRepository")
  * @ORM\Table(name="blog_post")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Post
 {
@@ -157,5 +158,46 @@ class Post
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param \DateTime $created
+     *
+     * @return Post
+     * @ORM\PrePersist()
+     */
+    public function setCreated()
+    {
+        $this->created = new \DateTime('now');
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param \DateTime $updated
+     * @return Post
+     * @ORM\PreUpdate()
+     */
+    public function setUpdated()
+    {
+        $this->updated = new \DateTime('now');
+
+        return $this;
     }
 }
